@@ -39,6 +39,26 @@ const getValueAsNum = () => {
     return parseFloat(getValueAsStr())
 }
 
+//Function to set the value in the display
+
+const setStrAsValue = (valueStr) => {
+
+    if (valueStr[valueStr.length - 1] === '.') {            // to include decimal in the current display
+        valueE.textContent += '.'
+        return;
+    }
+    // extract the wholenumber and decimal part from valueStr
+
+    const [wholeNumStr, decimalStr] = valueStr.split('.');
+    // console.log(wholeNumStr, decimalStr)  to check in devtool if the decimal number is displayed
+    if (decimalStr) {
+        valueE.textContent = parseFloat(wholeNumStr).toLocaleString() + '.' + decimalStr
+    } else {
+        valueE.textContent = parseFloat(wholeNumStr).toLocaleString();
+    }
+}
+
+
 //Function once number is clicked
 
 const handleNumberClick = ((numStr) => {         // string representation of number
@@ -47,10 +67,11 @@ const handleNumberClick = ((numStr) => {         // string representation of num
 
     // to remove 0 from the display contenet 
     if (currentValueStr === '0') {
-        valueE.textContent = numStr;
+        setStrAsValue(numStr)
     } else {
-        valueE.textContent =
-            parseFloat(currentValueStr + numStr).toLocaleString(); //to conver string to numbers and for commas for thousand values used toLocaleString
+        setStrAsValue(currentValueStr + numStr)
+        //  valueE.textContent =            //to conver string to numbers and for commas for thousand values used toLocaleString
+        //    parseFloat(currentValueStr + numStr).toLocaleString(); 
     }
 })
 
@@ -69,6 +90,7 @@ decimalE.addEventListener('click', () => {
     const currentValueStr = getValueAsStr();
     //   valueE.textContent = currentValueStr + '.';  this is to include dot but it's taking more than one dot
     if (!currentValueStr.includes('.')) {
-        valueE.textContent = currentValueStr + '.'
+        setStrAsValue(currentValueStr + '.')
+        //  valueE.textContent = currentValueStr + '.'  this is for the current display with dot
     }
 })
