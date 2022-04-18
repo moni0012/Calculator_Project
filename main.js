@@ -75,8 +75,34 @@ const handleNumberClick = ((numStr) => {         // string representation of num
     }
 })
 
-// Adding Event Listener to numbers and decimal buttons
+// Add event listener to functions
 
+acE.addEventListener('click', () => {
+    setStrAsValue('0');
+})
+
+pmE.addEventListener('click', () => {
+    const currentValueNum = getValueAsNum();
+    const currentValueStr = getValueAsStr();
+
+    if (currentValueStr === '-0') {
+        setStrAsValue('0')
+        return;
+    }
+    if (currentValueNum >= 0) {
+        setStrAsValue('-' + currentValueStr)
+    } else {
+        setStrAsValue(currentValueStr.substring(1))
+    }
+})
+
+percentageE.addEventListener('click', () => {
+    const currentValueNum = getValueAsNum();
+    const newValueNum = currentValueNum / 100;
+    setStrAsValue(newValueNum.toString());
+})
+
+// Adding Event Listener to numbers and decimal buttons
 
 for (let i = 0; i < numberEArray.length; i++) {
     const numberE = numberEArray[i];
