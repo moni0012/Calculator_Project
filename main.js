@@ -10,7 +10,7 @@ const additionE = document.querySelector('.addition');
 const subtractionE = document.querySelector('.subtraction');
 const multiplicationE = document.querySelector('.multiplication');
 const divisionE = document.querySelector('.division');
-const equalE = document.querySelector('.percentage');
+const equalE = document.querySelector('.equals');
 
 const decimalE = document.querySelector('.decimal');
 const number0E = document.querySelector('.number-0');
@@ -25,6 +25,11 @@ const number8E = document.querySelector('.number-8');
 const number9E = document.querySelector('.number-9');
 
 const numberEArray = [number0E, number1E, number2E, number3E, number4E, number5E, number6E, number7E, number8E, number9E];
+
+// variable decleration 
+
+let valueStrInMemory = null;
+let operatorInMemory = null;
 
 //Function to display the current text content
 
@@ -75,10 +80,42 @@ const handleNumberClick = ((numStr) => {         // string representation of num
     }
 })
 
+
+const getResultOfOperationAsStr = () => {
+    const currentValueNum = getValueAsNum();
+    const valueNumInMemory = parseFloat(valueStrInMemory);
+    let newValueNum;
+    if (operatorInMemory === 'addition') {
+        newValueNum = valueNumInMemory + currentValueNum;
+    } else if (operatorInMemory === 'subtraction') {
+        newValueNum = valueNumInMemory - currentValueNum;
+    } else if (operatorInMemory === 'multiplication') {
+        newValueNum = valueNumInMemory * currentValueNum;
+    } else if (operatorInMemory === 'division') {
+        newValueNum = valueNumInMemory / currentValueNum;
+    }
+    return newValueNum.toString();
+}
+
+const handleOperatorClick = (operation) => {
+    const currentValueStr = getValueAsStr();
+    if (!valueStrInMemory) {
+        valueStrInMemory = currentValueStr;
+        operatorInMemory = operation;
+        setStrAsValue('0');
+        return;
+    }
+    valueStrInMemory = getResultOfOperationAsStr();
+    operatorInMemory = operation;
+    setStrAsValue('0');
+}
+
 // Add event listener to functions
 
 acE.addEventListener('click', () => {
     setStrAsValue('0');
+    valueStrInMemory = null;
+    operatorInMemory = null;
 })
 
 pmE.addEventListener('click', () => {
@@ -100,8 +137,35 @@ percentageE.addEventListener('click', () => {
     const currentValueNum = getValueAsNum();
     const newValueNum = currentValueNum / 100;
     setStrAsValue(newValueNum.toString());
+    valueStrInMemory = null;
+    operatorInMemory = null;
 })
 
+// Add event listenefr to operators
+
+additionE.addEventListener('click', () => {
+    handleOperatorClick('addition');
+})
+
+subtractionE.addEventListener('click', () => {
+    handleOperatorClick('subtraction');
+})
+
+multiplicationE.addEventListener('click', () => {
+    handleOperatorClick('multiplication');
+})
+
+divisionE.addEventListener('click', () => {
+    handleOperatorClick('division');
+})
+
+equalE.addEventListener('click', () => {
+    if (valueStrInMemory) {
+        setStrAsValue(getResultOfOperationAsStr());
+        valueStrInMemory = null;
+        operatorInMemory = null;
+    }
+})
 // Adding Event Listener to numbers and decimal buttons
 
 for (let i = 0; i < numberEArray.length; i++) {
